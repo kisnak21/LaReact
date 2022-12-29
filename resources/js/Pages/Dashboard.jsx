@@ -1,6 +1,9 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Inertia } from "@inertiajs/inertia";
+import parser from "html-react-parser";
 import { Head, Link } from "@inertiajs/inertia-react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { useState, useEffect } from "react";
 
 export default function Dashboard(props) {
@@ -20,6 +23,25 @@ export default function Dashboard(props) {
         setTitle("");
         setDescription("");
         setCategory("");
+    };
+
+    const onInputHandler = (e) => {
+        setDescription(e.target.innerHTML);
+    };
+
+    const modules = {
+        toolbar: [
+            [{ font: [] }],
+            [{ header: [1, 2, 3, 4, 5, 6, false] }],
+            ["bold", "italic", "underline", "strike"],
+            [{ color: [] }, { background: [] }],
+            [{ script: "sub" }, { script: "super" }],
+            ["blockquote", "code-block"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
+            ["link", "image", "video"],
+            ["clean"],
+        ],
     };
 
     useEffect(() => {
@@ -71,15 +93,15 @@ export default function Dashboard(props) {
                             onChange={(title) => setTitle(title.target.value)}
                             value={title}
                         />
-                        <input
-                            type="text"
-                            placeholder="Description"
-                            className="m-2 input input-bordered w-full"
-                            onChange={(description) =>
-                                setDescription(description.target.value)
-                            }
+                        <ReactQuill
+                            className="m-2 w-full"
+                            theme="snow"
                             value={description}
+                            modules={modules}
+                            onChange={setDescription}
+                            onInput={onInputHandler}
                         />
+
                         <input
                             type="text"
                             placeholder="Category"
@@ -108,11 +130,8 @@ export default function Dashboard(props) {
                                     <div className="card-body">
                                         <h2 className="card-title">
                                             {news.title}
-                                            <div className="badge badge-secondary">
-                                                NEW
-                                            </div>
                                         </h2>
-                                        <p>{news.description}</p>
+                                        <p>{parser(news.description)}</p>
                                         <div className="card-actions justify-end">
                                             <div className="badge badge-inline">
                                                 {news.category}
