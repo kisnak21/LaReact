@@ -7,17 +7,16 @@ export default function Paginator({ meta }) {
     const current = meta.current_page;
 
     return (
-        <div className="btn-group">
+        <div className="btn-group grid grid-cols-3">
             {prev && (
                 <Link href={prev} className="btn btn-outline">
-                    «
+                    Previous
                 </Link>
             )}
-
-            <button className="btn btn-outline">{current}</button>
+            <button className="btn btn-inline">{current}</button>
             {next && (
                 <Link href={next} className="btn btn-outline">
-                    »
+                    Next
                 </Link>
             )}
         </div>
